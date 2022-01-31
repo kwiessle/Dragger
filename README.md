@@ -27,7 +27,7 @@ struct ContentView: View {
 # Create your own style
 
 By default the Dragger style mimics the iOS Toggle's design, but you can create your own !<br>
-A `Dragger` view is represented by three components: `Body`, `Track` and `Thumb<br>
+A `Dragger` view is represented by three components: `Body`, `Track` and `Thumb`<br>
 
 <img src="https://github.com/kwiessle/Dragger/blob/main/sample2.gif" width="250" height="480"/>
 
