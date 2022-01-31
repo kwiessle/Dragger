@@ -16,7 +16,7 @@ public struct Dragger: View {
     
     @State private var isHoldingThumb: Bool = false
     
-    @State private var isComplete: Bool = false {
+    @Binding var isComplete: Bool {
         didSet {
             #if os(iOS)
                 isComplete != oldValue ? UIImpactFeedbackGenerator(style: .medium).impactOccurred() : ()
@@ -26,7 +26,6 @@ public struct Dragger: View {
     
     @Environment(\.draggerStyle) private var style
     
-    var onComplete: () -> ()
     
     private var configuration: DraggerConfiguration {
         DraggerConfiguration(
@@ -60,6 +59,12 @@ public struct Dragger: View {
                     x: offset + thumbHorizontalPadding,
                     y: thumbVerticalPadding
                 )
+                .onAppear(perform: {
+                    if isComplete {
+                        offset = proxy.size.width - style.thumbSize.width - 2 * thumbHorizontalPadding
+                        fractionComplete = 1
+                    }
+                })
                 .onChange(of: proxy.size, perform: { newValue in
                     if isComplete {
                        offset = proxy.size.width - style.thumbSize.width - 2 * thumbHorizontalPadding
@@ -78,9 +83,10 @@ public struct Dragger: View {
                         .onEnded({ value in
                             isHoldingThumb = false
                             if isComplete {
-                                onComplete()
+                            
                             } else {
                                 withAnimation(.spring()) {
+                                
                                     fractionComplete = .zero
                                     offset = .zero
                                 }
@@ -88,7 +94,7 @@ public struct Dragger: View {
                         })
                         
                 )
-                Text(proxy.size.debugDescription)
+
             
         }
         .frame(
@@ -103,8 +109,8 @@ public struct Dragger: View {
         )
     }
     
-    public init(onComplete: @escaping () -> Void) {
-        self.onComplete = onComplete
+    public init(isComplete: Binding<Bool>) {
+        self._isComplete = isComplete
     }
     
     public func draggerStyle<Style: DraggerStyle>(_ style: Style) -> some View {
