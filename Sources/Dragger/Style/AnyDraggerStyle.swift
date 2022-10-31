@@ -24,7 +24,7 @@ public struct AnyDraggerStyle: DraggerStyle {
     public let trackHeight: CGFloat
     
     
-    init<Style>(_ style: Style) where Style: DraggerStyle {
+    public init<Style>(_ style: Style) where Style: DraggerStyle {
         self._makeBody = { AnyView(style.makeBody(configuration: $0)) }
         self._makeTrack = { AnyView(style.makeTrack(configuration: $0)) }
         self._makeThumb = { AnyView(style.makeThumb(configuration: $0)) }

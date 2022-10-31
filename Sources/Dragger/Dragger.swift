@@ -113,8 +113,10 @@ public struct Dragger: View {
         self._isComplete = isComplete
     }
     
+}
+
+extension View {
     public func draggerStyle<Style: DraggerStyle>(_ style: Style) -> some View {
         environment(\.draggerStyle, AnyDraggerStyle(style))
     }
-    
 }
