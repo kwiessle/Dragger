@@ -82,11 +82,10 @@ public struct Dragger: View {
                         })
                         .onEnded({ value in
                             isHoldingThumb = false
-                            if isComplete {
                             
-                            } else {
+                            if !isComplete {
                                 withAnimation(.spring()) {
-                                
+                                    
                                     fractionComplete = .zero
                                     offset = .zero
                                 }
@@ -94,9 +93,16 @@ public struct Dragger: View {
                         })
                         
                 )
-
-            
         }
+        .onChange(of: configuration.isComplete, perform: { isComplete in
+            if !isComplete {
+                withAnimation(.spring()) {
+                
+                    fractionComplete = .zero
+                    offset = .zero
+                }
+            }
+        })
         .frame(
             minWidth: 2 * style.thumbSize.width + thumbVerticalPadding,
             maxWidth: .infinity,
